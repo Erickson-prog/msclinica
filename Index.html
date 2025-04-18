@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clínica MS</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 9999;
+      background-color: transparent;
+      box-shadow: none;
+      transition: background-color 0,3s ease, box-shadow 0.3s ease;
+    }
+
+    header.scrolled {
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: transparent;
+    }
+    .logo {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .logo img {
+      height: 80px;
+    }
+
+    .btn-agendar {
+      position: absolute;
+      top: 20px;
+      left: 50px;
+      background-color: #f26522;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: 30px;
+      right: 100px;
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a,
+    .dropdown > a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      
+    }
+
+    header.scrolled .nav-links a,
+    header.scrolled .dropdown > a {
+      color: black;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      min-width: 200px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      z-index: 10;
+    }
+
+    .dropdown-content a {
+      padding: 10px 15px;
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #333;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      background: url('banner.png') no-repeat center center;
+      background-size: cover;
+      padding-top: 100px; /* Evita que o topo do banner fique escondido pelo header */
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      background: #ff7a00;
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      position: absolute;
+      bottom: 90px;
+      right: 700px;
+      text-align: center;
+    }
+
+    .btn-saiba {
+      background: #ff7a00;
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover,
+    .btn-saiba:hover {
+      background: #e66a00;
+    }
+
+    section.sobre, section.tratamentos {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .titulo-quem-somos {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .titulo-quem-somos h2 {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .sublinhado {
+      text-decoration: underline;
+      text-decoration-color: #f26522;
+      text-underline-offset: 6px;
+    }
+
+    .secao-quem-somos {
+      padding: 100px 20px 60px;
+      margin: 100px auto 0;
+      background-color: #1f1f1f;
+      color: white;
+      width: 100%;
+    }
+
+    .secao-quem-somos h2 {
+      color: white;
+    }
+
+    .secao-quem-somos p {
+      color: #dcb208;
+    }
+
+    .conteudo-sobre {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .imagem-sobre {
+      max-width: 500px;
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .texto-sobre {
+      flex: 1;
+      max-width: 600px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .tratamentos-lista {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .tratamento-item {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .tratamento-item:hover {
+      transform: translateY(-10px);
+    }
+
+    .tratamento-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background: #111;
+      color: #fff;
+      padding: 40px 20px;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 768px) {
+      .botao-extra-banner {
+        position: static;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .conteudo-sobre {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .imagem-sobre {
+        max-width: 100%;
+      }
+
+      .texto-sobre {
+        max-width: 100%;
+        padding: 0 10px;
+      }
+
+      .titulo-quem-somos h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <a class="btn-agendar" href="https://wa.me/17996016578" target="_blank">Agendar</a>
+      <div class="logo">
+        <img src="logo5-removebg-preview.png" alt="Logo Clínica MS">
+      </div>
+      <div class="nav-links">
+        <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
+        <div class="dropdown">
+          <a>Tratamentos ▼</a>
+          <div class="dropdown-content">
+            <a href="#facetas">Facetas</a>
+            <a href="#clareamento">Clareamento</a>
+            <a href="#implantes">Implantes</a>
+            <a href="#ortodontia">Ortodontia</a>
+            <a href="#botox">Botox</a>
+          </div>
+        </div>
+        <a href="#contato">Contato</a>
+      </div>
+    </div>
+    <div class="hero-content">
+      <a href="#tratamentos" class="btn-primary">CONHEÇA A <br> NOSSA ESTRUTURA</a>
+    </div>
+  </div>
+
+  <div class="titulo-quem-somos">
+    <h2><span class="sublinhado">QUEM SOMOS</span></h2>
+  </div>
+
+  <section class="secao-quem-somos">
+    <div class="conteudo-sobre">
+      <img src="_MG_7740.jpg" alt="Foto da Clínica" class="imagem-sobre">
+      <div class="texto-sobre">
+        <p>Na MS Odontologia Especializada, acreditamos que sorrir é mais do que um gesto — é uma expressão de bem-estar, autoestima e felicidade. Por isso, unimos a arte da odontologia estética à sensibilidade no atendimento, oferecendo um serviço diferenciado, humano e transformador.<br>
+
+          Nossa clínica foi idealizada com o propósito de proporcionar uma experiência única, que vai além do consultório. Cada detalhe do nosso espaço foi pensado para acolher com conforto, segurança e confiança, desde a recepção até o momento final de cada tratamento.<br> Aqui, o paciente é tratado com carinho, atenção e total dedicação.
+          
+          Somos especialistas em estética e reabilitação oral, e nossa equipe está em constante atualização, acompanhando as tendências e inovações do setor para garantir resultados naturais, harmônicos e personalizados.<br> A liderança está nas mãos do Dr. Melquisedeque Salicio, que conduz a equipe com excelência técnica, paixão pela odontologia e valores cristãos que se refletem em um atendimento ético, respeitoso e cheio de propósito.<br>
+          
+          Na MS, enxergamos cada paciente como único. Nosso compromisso é cuidar de sorrisos, sim — mas também de histórias, de sonhos e de pessoas. Trabalhamos com seriedade, mas também com empatia e amor.<br> Nosso maior objetivo é ver nossos pacientes saindo da clínica não apenas com um sorriso bonito, mas com a alma leve.<br>
+          
+          "Tudo o que fizerem, façam de todo o coração, como para o Senhor." (Colossenses 3:23)<br>
+          
+          Seja bem-vindo à MS Odontologia Estética. O seu novo sorriso começa aqui</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tratamentos" id="tratamentos">
+    <h2>Tratamentos</h2>
+    <div class="tratamentos-lista">
+      <div class="tratamento-item">
+        <img src="implante.jpg" alt="Implante Dentário">
+        <h3>Implante Dentário</h3>
+        <p>Recupere seu sorriso com segurança e conforto.</p>
+        <a href="implante.html" class="btn-saiba">Saiba Mais</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contato">
+    <div class="footer-content">
+      <div class="contato">
+        <h3>Contato</h3>
+        <p>Telefone: (17) 99601-6578</p>
+        <p>Email: contato@clinicams.com.br</p>
+      </div>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.260923374589!2d-48.91777662497685!3d-20.740215880837905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94bc6e671eb5389b%3A0x1890f3338ba235ba!2zQXNzb2NpYcOnw6NvIGRlIFNvY29ycm9zIE3DunR1b3MgZGUgT2zDrW1waWE!5e0!3m2!1spt-BR!2sbr!4v1745007473332!5m2!1spt-BR!2sbr" width="100%" height="200" style="border:0;" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
